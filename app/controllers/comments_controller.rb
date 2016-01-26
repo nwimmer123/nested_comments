@@ -5,9 +5,24 @@ class CommentsController < ApplicationController
 	end
 
 	def new
+		@comment = Comment.new
 	end
 
 	def create
+		@comment = Comment.new(comment_params)
+
+		if @comment.save
+			flash[:success] = 'Your comment was succesfully added!'
+			redirect_to root_url
+		else
+			render 'new'
+		end
 	end
-	
+
+	private
+
+	def current_params
+		params.require(:comment).permit(:title, :body, :author)
+	end
+
 end
